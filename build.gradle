@@ -20,6 +20,10 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// https://mvnrepository.com/artifact/io.github.dengliming.redismodule/all
+	implementation group: 'io.github.dengliming.redismodule', name: 'all', version: '2.0.0'
+	// https://mvnrepository.com/artifact/io.github.cdimascio/dotenv-java
+	implementation group: 'io.github.cdimascio', name: 'dotenv-java', version: '2.2.4'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
