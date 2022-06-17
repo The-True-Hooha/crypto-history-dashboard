@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class CoinsDataService {
+public class CryptoHistoryService {
 
     //sets the api that is going to be called
     public static final String GET_COINS_API = "https://coinranking1.p.rapidapi.com/coins?referenceCurrencyUuid=yhjMzLPhuIDl&timePeriod=24h&tiers%5B0%5D=1&orderBy=marketCap&orderDirection=desc&limit=50&offset=0";
