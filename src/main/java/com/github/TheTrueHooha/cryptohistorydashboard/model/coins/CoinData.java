@@ -10,6 +10,6 @@ import java.util.List;
 @Setter
 public class CoinData {
 
-    private CoinStats coinStats;
-    private List<CoinDetails> coinDetails = new ArrayList<>();
+    private CoinStats stats;
+    private List<CoinDetails> coins = new ArrayList<>();
 }

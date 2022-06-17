@@ -14,9 +14,7 @@ public class StartupApplication implements ApplicationListener<ApplicationReadyE
     @Autowired
     private final CryptoHistoryService cryptoHistoryService;
 
-
     //calls the data from the rapid api host and parse it to the redis stack database
-
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
         cryptoHistoryService.getAllCoins();

@@ -18,6 +18,7 @@ public class RedisConfiguration {
     private static final String redisUsername = "default";
      */
 
+
     //declares the modules from the redis stack needed
     @Bean
     public Config redisConfig(){
@@ -36,8 +37,8 @@ public class RedisConfiguration {
         return new RedisTimeSeriesClient(config);
     }
 
-    @Bean
     //redis time series instantiates the redis time series client
+    @Bean
     public RedisTimeSeries redisTimeSeries(RedisTimeSeriesClient redisTimeSeriesClient){
         return redisTimeSeriesClient.getRedisTimeSeries();
     }
@@ -48,8 +49,8 @@ public class RedisConfiguration {
         return new RedisJSONClient(config);
     }
 
-    @Bean
     //redis json instantiates the redis json client
+    @Bean
     public RedisJSON redisJSON(RedisJSONClient redisJSONClient){
         return redisJSONClient.getRedisJSON();
     }

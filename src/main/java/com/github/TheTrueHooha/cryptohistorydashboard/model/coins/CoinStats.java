@@ -17,6 +17,6 @@ public class CoinStats {
     private String totalMarketCap;
     private String total24Volume;
     private float btcDominance;
-    private List<CoinDetails> bestCoinDetail = new ArrayList<>();
-    private List<CoinDetails> newCoinDetails = new ArrayList<>();
+    private List<CoinDetails> bestCoins = new ArrayList<>();
+    private List<CoinDetails> newestCoins = new ArrayList<>();
 }

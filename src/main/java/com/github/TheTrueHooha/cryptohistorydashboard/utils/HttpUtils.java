@@ -14,8 +14,8 @@ public class HttpUtils {
     public static HttpEntity<String> getHttpEntity(){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        httpHeaders.set("X-RapidAPI-Host", apiHost);
         httpHeaders.set("X-RapidAPI-Key", apiKey);
+        httpHeaders.set("X-RapidAPI-Host", apiHost);
         return new HttpEntity<>(null, httpHeaders);
     }
 
