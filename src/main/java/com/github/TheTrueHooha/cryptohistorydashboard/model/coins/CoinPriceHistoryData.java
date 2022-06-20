@@ -11,5 +11,5 @@ import java.util.List;
 public class CoinPriceHistoryData {
 
     private String change;
-    private List<CoinPriceHistoryExchangeRate> coinPriceHistoryExchangeRates = new ArrayList<>();
+    private List<CoinPriceHistoryExchangeRate> history = new ArrayList<>();
 }

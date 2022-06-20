@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class StartupApplication implements ApplicationListener<ApplicationReadyEvent> {
+    //starts the application and calls each individual method necessary
 
     @Autowired
     private final CryptoHistoryService cryptoHistoryService;
@@ -18,5 +19,8 @@ public class StartupApplication implements ApplicationListener<ApplicationReadyE
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
         cryptoHistoryService.getAllCoins();
+        cryptoHistoryService.getPriceHistory();
+
+        //todo: create scheduler to make request fow new data every 3 days
     }
 }

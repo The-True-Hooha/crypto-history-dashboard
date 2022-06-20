@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class CoinPriceHistory {
     private String status;
-    private CoinPriceHistoryData coinPriceHistoryData;
+    private CoinPriceHistoryData data;
 }
