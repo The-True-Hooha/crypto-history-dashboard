@@ -2,6 +2,7 @@ package com.github.TheTrueHooha.cryptohistorydashboard.service;
 
 import com.github.TheTrueHooha.cryptohistorydashboard.model.coins.*;
 import com.github.TheTrueHooha.cryptohistorydashboard.utils.HttpUtils;
+import io.github.cdimascio.dotenv.Dotenv;
 import io.github.dengliming.redismodule.redisjson.RedisJSON;
 import io.github.dengliming.redismodule.redisjson.args.GetArgs;
 import io.github.dengliming.redismodule.redisjson.args.SetArgs;
@@ -13,6 +14,7 @@ import io.github.dengliming.redismodule.redistimeseries.TimeSeriesOptions;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,15 +28,10 @@ import java.util.Map;
 @Slf4j
 public class CryptoHistoryService {
 
-    //sets the api that is going to be called
-    public static final String GET_COINS_API = "https://coinranking1.p.rapidapi.com/coins?referenceCurrencyUuid=yhjMzLPhuIDl&timePeriod=24h&tiers%5B0%5D=1&orderBy=marketCap&orderDirection=desc&limit=50&offset=0";
-    public static final String REDIS_JSON_KEY = "coin list";
-    public static final String GET_COIN_PRICE_HISTORY_API = "https://coinranking1.p.rapidapi.com/coin/";
-    public static final String COIN_HISTORY_TIME_PERIOD_PARAM = "/history?timePeriod=";
-    public static final List<String> timePeriods = List.of("24h");
 
     @Autowired
     private final RestTemplate restTemplate;
+
 
     @Autowired
     private final RedisJSON redisJSON;
@@ -42,11 +39,17 @@ public class CryptoHistoryService {
     @Autowired
     private final RedisTimeSeries redisTimeSeries;
 
+    //sets the time period that is requested from the API
+    public static final List<String> timePeriods = List.of("24h");
+
+
     //method that gets the coin details from the API
+    @Bean
     public void getAllCoins(){
+        Dotenv dotenv = Dotenv.load();
         log.info("fetching the available coins");
         ResponseEntity<Coins> coinsResponseEntity = restTemplate.exchange(
-                GET_COINS_API,
+                (dotenv.get("GET_COINS_API")),
                 HttpMethod.GET,
                 HttpUtils.getHttpEntity(),
                 Coins.class);
@@ -66,9 +69,15 @@ public class CryptoHistoryService {
     }
 
     //gets the coin data by query param (time history)
-    private void getCoinDataByTimeHistory(CoinDetails coinDetails, String timeHistory) {
+
+    public void getCoinDataByTimeHistory(CoinDetails coinDetails, String timeHistory) {
+
+
         log.info("retrieving coin history of {} for time period {}", coinDetails.getName(), timeHistory);
-        String url = GET_COIN_PRICE_HISTORY_API + coinDetails.getUuid() + COIN_HISTORY_TIME_PERIOD_PARAM + timeHistory;
+
+        Dotenv dotenv = Dotenv.load();
+        String url = (dotenv.get("GET_COIN_PRICE_HISTORY_API")) + coinDetails.getUuid() +
+                (dotenv.get("COIN_HISTORY_TIME_PERIOD_PARAM")) + timeHistory;
         ResponseEntity<CoinPriceHistory> coinPriceHistoryResponseEntity = restTemplate.exchange(url,
                 HttpMethod.GET,
                 HttpUtils.getHttpEntity(),
@@ -87,10 +96,9 @@ public class CryptoHistoryService {
                 getData().
                 getHistory();
 
-
         //defines the way the data is extracted by time history
         coinPriceHistoryExchangeRates.stream()
-                .filter(ch -> ch.getPrice() !=null && ch.getTimestamp() !=null)
+                .filter(ch -> ch.getPrice() !=null && ch.getTimestamp() != null)
                 .forEach(ch -> {
                     redisTimeSeries.add(new Sample(symbol + ":" + timeHistory,
                                     Sample.Value.of(Long.valueOf(ch.getTimestamp()), Double.valueOf(ch.getPrice()))),
@@ -101,8 +109,10 @@ public class CryptoHistoryService {
     }
 
     //gets all the coins list from the database
+    @Bean
     private List<CoinDetails> getAllCoinsFromRedisJson() {
-        CoinData coinData = redisJSON.get(REDIS_JSON_KEY, CoinData.class,
+        Dotenv dotenv = Dotenv.load();
+        CoinData coinData = redisJSON.get((dotenv.get("REDIS_JSON_KEY")), CoinData.class,
                 new GetArgs().
                         path(".data").
                         indent("\t").
@@ -114,7 +124,8 @@ public class CryptoHistoryService {
 
     //saves the data to the redis database
     private void storeGetAllCoinsData(Coins coins) {
-        redisJSON.set(REDIS_JSON_KEY, SetArgs.Builder.create(".", GsonUtils.toJson(coins)));
+        Dotenv dotenv = Dotenv.load();
+        redisJSON.set((dotenv.get("REDIS_JSON_KEY")), SetArgs.Builder.create(".", GsonUtils.toJson(coins)));
     }
 
     public List<CoinDetails> getAllCoinsFromRedisStore() {

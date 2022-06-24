@@ -2,12 +2,14 @@ package com.github.TheTrueHooha.cryptohistorydashboard.model.coins;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Configurable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
+@Configurable
 public class CoinDetails {
     private String uuid;
     private String symbol;
