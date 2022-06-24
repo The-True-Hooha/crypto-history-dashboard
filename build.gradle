@@ -24,6 +24,8 @@ dependencies {
 	implementation group: 'io.github.dengliming.redismodule', name: 'all', version: '2.0.0'
 	// https://mvnrepository.com/artifact/io.github.cdimascio/dotenv-java
 	implementation group: 'io.github.cdimascio', name: 'dotenv-java', version: '2.2.4'
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-configuration-processor
+	implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: '2.7.0'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

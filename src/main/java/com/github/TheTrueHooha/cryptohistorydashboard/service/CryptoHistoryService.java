@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -114,5 +115,27 @@ public class CryptoHistoryService {
     //saves the data to the redis database
     private void storeGetAllCoinsData(Coins coins) {
         redisJSON.set(REDIS_JSON_KEY, SetArgs.Builder.create(".", GsonUtils.toJson(coins)));
+    }
+
+    public List<CoinDetails> getAllCoinsFromRedisStore() {
+        return getAllCoinsFromRedisJson();
+    }
+
+    public List<Sample.Value> getCoinTimeSeriesFromRedisStore(String symbol, String timePeriod) {
+        Map<String, Object> timeSeriesInfo = getTimeSeriesDataPerSymbol(symbol, timePeriod);
+        Long firstTimeStamp = Long.valueOf(timeSeriesInfo.get("firstTimeStamp").toString());
+        Long lastTimeStamp = Long.valueOf(timeSeriesInfo.get("lastTimeStamp").toString());
+
+        List<Sample.Value> coinTimeSeriesData = getTimeSeriesDataPerCoin(symbol, timePeriod, firstTimeStamp, lastTimeStamp);
+        return coinTimeSeriesData;
+    }
+
+    private List<Sample.Value> getTimeSeriesDataPerCoin(String symbol, String timePeriod, Long firstTimeStamp, Long lastTimeStamp) {
+        String key = symbol + ":" + timePeriod;
+         return redisTimeSeries.range(key, firstTimeStamp, lastTimeStamp);
+    }
+
+    private Map<String, Object> getTimeSeriesDataPerSymbol(String symbol, String timePeriod) {
+        return redisTimeSeries.info(symbol + ":" + timePeriod);
     }
 }

@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@CrossOrigin(value = "http://localhost:3030")
+@CrossOrigin(value = "http://localhost:3000")
 @RestController
-@RequestMapping("/api/v1/crypto-dashboard")
+@RequestMapping("/api/v1/crypto-history")
 @AllArgsConstructor
 @Slf4j
 public class CryptoDashboardController {
@@ -25,7 +25,7 @@ public class CryptoDashboardController {
     private final CryptoHistoryService historyService;
 
     //gets a list of all the coins
-    @GetMapping(path = "get-all-coins")
+    @GetMapping(path = "/get-coins")
     public ResponseEntity<List<CoinDetails>> getAllCoins(){
         return ResponseEntity.ok().body(historyService.getAllCoinsFromRedisStore());
     }

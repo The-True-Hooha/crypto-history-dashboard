@@ -12,17 +12,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RedisConfiguration {
 
-    /*
-    private static final String redisUrl = "";
-    private static final String redisPassword = "";
-    private static final String redisUsername = "default";
-     */
-
-
     //declares the modules from the redis stack needed
     @Bean
     public Config redisConfig(){
         Dotenv dotenv = Dotenv.load();
+
         Config config = new Config();
         config.useSingleServer()
                 .setAddress(dotenv.get("REDIS_URL"))
