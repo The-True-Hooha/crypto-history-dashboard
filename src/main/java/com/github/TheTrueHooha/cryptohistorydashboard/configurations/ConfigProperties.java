@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public record ConfigProperties(
         String redisUrl,
         String redisPassword,
-        String redisUsername,
+        String redisUser,
         String GET_COINS_API,
         String REDIS_JSON_KEY,
         String GET_COIN_PRICE_HISTORY_API,

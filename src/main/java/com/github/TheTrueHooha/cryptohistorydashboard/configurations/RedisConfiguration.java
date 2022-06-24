@@ -20,7 +20,7 @@ public class RedisConfiguration {
         Config config = new Config();
         config.useSingleServer()
                 .setAddress(dotenv.get("REDIS_URL"))
-                .setUsername(dotenv.get("REDIS_USERNAME"))
+                .setUsername(dotenv.get("REDIS_USER"))
                 .setPassword(dotenv.get("REDIS_PASSWORD"));
         return config;
     }
